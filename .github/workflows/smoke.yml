@@ -1,0 +1,44 @@
+name: Smoke-Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:        # 手动触发按钮
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '17'
+
+    - name: Start JPetStore
+      run: |
+        docker run -d --name jpetstore -p 8080:8080 tomcat:9-jdk17
+        curl -L -o jpetstore.war https://ghproxy.com/https://github.com/mybatis/jpetstore-6/releases/download/jpetstore-6.0.1/jpetstore.war
+        docker cp jpetstore.war jpetstore:/usr/local/tomcat/webapps/
+        timeout 60 bash -c 'until curl -s http://localhost:8080/jpetstore > /dev/null; do sleep 2; done'
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install deps
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run smoke tests
+      run: pytest --html=report/smoke.html --self-contained-html -v
+
+    - name: Upload report
+      uses: actions/upload-artifact@v4
+      with:
+        name: smoke-report
+        path: report/smoke.html
