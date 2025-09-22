@@ -14,3 +14,4 @@ class QueryPage(Base):
         self.page_input_query(value)
         self.page_click_query()
 
+

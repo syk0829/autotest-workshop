@@ -1,0 +1,20 @@
+{
+    "base_url": "http://localhost:8080/jpetstore/actions/Catalog.action",
+    "implicit_wait": 10,
+    "explicit_wait": 30,
+    "maximize_window": true,
+    "browser_options": {
+        "headless": false,
+        "no_sandbox": true,
+        "disable_gpu": true,
+        "disable_extensions": true,
+        "disable_images": true,
+        "disable_dev_shm_usage": true
+    },
+    "test_data": {
+        "login": {
+            "username": "j2ee",
+            "password": "j2ee"
+        }
+    }
+}

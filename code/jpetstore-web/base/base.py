@@ -1,3 +1,4 @@
+from selenium.common import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 
 class Base:
@@ -5,7 +6,11 @@ class Base:
         self.driver = driver
     #基础获取元素
     def base_get_element(self,locator,timeout=10,poll=0.5):
-        return WebDriverWait(self.driver,timeout,poll).until(lambda x:x.find_element(*locator))
+        try:
+            return WebDriverWait(self.driver,timeout,poll).until(lambda x:x.find_element(*locator))
+        except TimeoutException:
+            return f"Element {locator} not found within {timeout}s"
+
     # 点击元素
     def base_click(self,locator):
         self.base_get_element(locator).click()

@@ -1,7 +1,7 @@
 from base.base import Base
 import page
 
-class Add_ChartPage(Base):
+class Add_CartPage(Base):
     # 搜索框输入
     def page_click_details(self,):
         self.base_click(page.detail_btn)

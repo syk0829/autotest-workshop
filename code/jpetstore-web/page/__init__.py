@@ -7,6 +7,7 @@ login_submit = By.NAME, 'signon'
 # 查询
 query_box = By.NAME, 'keyword'
 query_btn = By.NAME, 'searchProducts'
+query_msg = By.CSS_SELECTOR, '#Catalog > table > tbody > tr:nth-child(2) > td:nth-child(3)'
 
 #加入购物车
 detail_btn = By.CSS_SELECTOR, '#Catalog > table > tbody > tr:nth-child(3) > td:nth-child(1) > a'

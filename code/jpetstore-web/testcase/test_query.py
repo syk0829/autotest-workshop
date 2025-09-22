@@ -1,24 +1,18 @@
 import csv
 import pytest
-
 from page.login_page import LoginPage
 from page.query_page import QueryPage
-from tools.get_driver import start_Chrome,quit_Chrome
-
 class TestQuery:
-    @classmethod
-    def setup_class(cls,username="j2ee",password="j2ee"):
-        cls.driver = start_Chrome("http://localhost:8080/jpetstore/actions/Catalog.action")
-        cls.login_page = LoginPage(cls.driver)
-        cls.query_page = QueryPage(cls.driver)
-        cls.login_page.page_sign_in(username, password)
-    @classmethod
-    def teardown_class(cls):
-        quit_Chrome(cls.driver)
-
     @pytest.mark.parametrize("value", csv.reader(open("../data/query.csv", newline='')))
-    def test_query(self,value):
-        self.query_page.page_query(value)
+    def test_query(self,class_driver,config,value):
+        class_driver.get(config['base_url'])
+        login_page = LoginPage(class_driver)
+        query_page = QueryPage(class_driver)
+
+        username = config.get('username', 'j2ee')
+        password = config.get('password', 'j2ee')
+        login_page.page_sign_in(username, password)
+        query_page.page_query(value)
 
 
 

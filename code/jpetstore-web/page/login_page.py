@@ -21,3 +21,13 @@ class LoginPage(Base):
         self.page_input_username(username)
         self.page_input_password(password)
         self.page_click_login_submit()
+
+    def is_login_successful(self):
+        current_url = self.driver.current_url
+        # 成功：不在登录页面了
+        if 'signon' in current_url or 'login' in current_url.lower():
+            return False
+        # 成功：跳转到主页
+        if 'Catalog.action' in current_url:
+            return True
+        return False
